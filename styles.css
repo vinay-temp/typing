@@ -85,7 +85,7 @@ textarea {
   flex-wrap: wrap;
   justify-content: space-around;
   gap: 20px;
-  width: 60%;
+  width: 100%;
   max-width: 1200px;
   padding: 20px;
 }
