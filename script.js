@@ -1,4 +1,4 @@
-const countdownTime = 5;
+const countdownTime = 15 * 60;
 
 let timeLeft = countdownTime;
 let timerInterval;
