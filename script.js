@@ -1,4 +1,4 @@
-const countdownTime = 15 * 60;
+const countdownTime = 5;
 
 let timeLeft = countdownTime;
 let timerInterval;
@@ -39,14 +39,17 @@ function setup() {
 
   document.getElementById("text1").scrollTop = 0;
   document.getElementById("btn").classList.add("hide");
+  document.getElementById("timer").textContent = "15 : 00";
+  document.getElementById("words").classList.add("hide");
+  document.getElementById("keystrokes").classList.add("hide");
 }
 
 function startTimer() {
   if (timerInterval) return;
 
+  setup();
   disableFunctions();
   goFullScreen();
-  setup();
 
   timerInterval = setInterval(() => {
     timeLeft--;
@@ -54,16 +57,39 @@ function startTimer() {
     const minutes = Math.floor(timeLeft / 60);
     const seconds = timeLeft % 60;
 
-    document.getElementById("timer").textContent = `${String(minutes).padStart(
-      2,
-      "0"
-    )} : ${String(seconds).padStart(2, "0")}`;
+    document.getElementById("timer").textContent = `${String(minutes).padStart(2,"0")} : ${String(seconds).padStart(2, "0")}`;
 
     if (timeLeft < 0) {
       clearInterval(timerInterval);
-      document.getElementById("timer").textContent = "Time's Up!";
+
       document.getElementById("text2").disabled = true;
+      document.getElementById("timer").textContent = "Time's Up!";
+      document.getElementById("words").classList.remove("hide");
+      document.getElementById("keystrokes").classList.remove("hide");
+      
       enableFunctions();
     }
   }, 1000);
 }
+
+async function load_test(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("File not found");
+    
+    const data = await response.json();
+
+    document.title = data.name;
+    document.getElementById("title").innerHTML = data.name;
+    document.getElementById("text1").innerHTML = data.text;
+    document.getElementById("words").innerHTML = `Total Words: ${data.words}`;
+    document.getElementById("keystrokes").innerHTML = `Keystrokes: ${data.keystrokes}`;
+
+  } catch (error) {
+    console.error("Error loading text:", error);
+  }
+}
+
+const urlParams = new URLSearchParams(window.location.search);
+const url = urlParams.get("src");
+load_test(url);

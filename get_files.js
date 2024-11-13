@@ -2,22 +2,6 @@ const apiUrl = `https://api.github.com/repos/vinay-temp/textfiles/contents/`;
 
 var tests = document.getElementById("tests");
 
-async function load_test(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) throw new Error("File not found");
-    const TEXT = await response.text();
-
-    tests.classList.add("hide");
-    document.getElementById("start-test").classList.remove("hide");
-    document.getElementById("text1").innerHTML = TEXT;
-
-
-  } catch (error) {
-    console.error("Error loading text:", error);
-  }
-}
-
 fetch(apiUrl)
   .then((response) => {
     if (!response.ok) {
@@ -37,11 +21,11 @@ fetch(apiUrl)
       h3.textContent = name;
       testCard.appendChild(h3);
 
-      var button = document.createElement("button");
+      var button = document.createElement("a");
       button.classList.add("start-btn");
       button.textContent = "Start";
-      button.onclick = () => load_test(url);
-
+      button.href = `start.html?src=${url}`;
+      button.target = "_blank";
       testCard.appendChild(button);
 
       tests.appendChild(testCard);
